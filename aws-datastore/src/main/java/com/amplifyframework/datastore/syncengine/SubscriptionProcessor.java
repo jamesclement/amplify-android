@@ -192,7 +192,7 @@ final class SubscriptionProcessor {
         .observeOn(Schedulers.io())
         .map(SubscriptionProcessor::unwrapResponse)
         .map(modelWithMetadata -> SubscriptionEvent.<T>builder()
-            .type(fromSubscriptionType(subscriptionType))
+            .type(subscriptionType)
             .modelWithMetadata(modelWithMetadata)
             .modelClass((Class<T>) modelWithMetadata.getModel().getClass())
             .build()
@@ -260,19 +260,6 @@ final class SubscriptionProcessor {
             );
         }
         return response.getData();
-    }
-
-    private static SubscriptionEvent.Type fromSubscriptionType(SubscriptionType subscriptionType) {
-        switch (subscriptionType) {
-            case ON_CREATE:
-                return SubscriptionEvent.Type.CREATE;
-            case ON_DELETE:
-                return SubscriptionEvent.Type.DELETE;
-            case ON_UPDATE:
-                return SubscriptionEvent.Type.UPDATE;
-            default:
-                throw new IllegalArgumentException("Unknown subscription type: " + subscriptionType);
-        }
     }
 
     interface SubscriptionMethod {

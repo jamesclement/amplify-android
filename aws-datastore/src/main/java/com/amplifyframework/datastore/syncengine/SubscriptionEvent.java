@@ -18,6 +18,7 @@ package com.amplifyframework.datastore.syncengine;
 import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
 
+import com.amplifyframework.api.graphql.SubscriptionType;
 import com.amplifyframework.core.model.Model;
 import com.amplifyframework.datastore.appsync.ModelWithMetadata;
 
@@ -31,9 +32,9 @@ import java.util.Objects;
 final class SubscriptionEvent<T extends Model> {
     private final ModelWithMetadata<T> modelWithMetadata;
     private final Class<T> modelClass;
-    private final Type type;
+    private final SubscriptionType type;
 
-    private SubscriptionEvent(ModelWithMetadata<T> modelWithMetadata, Class<T> modelClass, Type type) {
+    private SubscriptionEvent(ModelWithMetadata<T> modelWithMetadata, Class<T> modelClass, SubscriptionType type) {
         this.modelWithMetadata = modelWithMetadata;
         this.modelClass = modelClass;
         this.type = type;
@@ -52,7 +53,7 @@ final class SubscriptionEvent<T extends Model> {
 
     @SuppressWarnings("unused")
     @NonNull
-    Type type() {
+    SubscriptionType type() {
         return type;
     }
 
@@ -64,7 +65,7 @@ final class SubscriptionEvent<T extends Model> {
     static final class Builder<T extends Model> {
         private ModelWithMetadata<T> modelWithMetadata;
         private Class<T> modelClass;
-        private Type type;
+        private SubscriptionType type;
 
         @NonNull
         Builder<T> modelWithMetadata(@NonNull ModelWithMetadata<T> modelWithMetadata) {
@@ -79,7 +80,7 @@ final class SubscriptionEvent<T extends Model> {
         }
 
         @NonNull
-        Builder<T> type(@NonNull Type type) {
+        Builder<T> type(@NonNull SubscriptionType type) {
             this.type = Objects.requireNonNull(type);
             return this;
         }
@@ -89,25 +90,5 @@ final class SubscriptionEvent<T extends Model> {
         SubscriptionEvent<T> build() {
             return new SubscriptionEvent<>(modelWithMetadata, modelClass, type);
         }
-    }
-
-    /**
-     * An enumeration of the different type of mutations that may be observed.
-     */
-    public enum Type {
-        /**
-         * An item is created.
-         */
-        CREATE,
-
-        /**
-         * An item is updated.
-         */
-        UPDATE,
-
-        /**
-         * An item is deleted.
-         */
-        DELETE
     }
 }
