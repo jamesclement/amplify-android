@@ -98,7 +98,7 @@ public final class OrchestratorTest {
         ModelProvider modelProvider = SimpleModelProvider.withRandomVersion(BlogOwner.class);
         ModelSchemaRegistry modelSchemaRegistry = ModelSchemaRegistry.instance();
         modelSchemaRegistry.clear();
-        modelSchemaRegistry.load(modelProvider.models());
+        modelSchemaRegistry.register(modelProvider.modelSchemas());
 
         orchestrator =
             new Orchestrator(modelProvider,
